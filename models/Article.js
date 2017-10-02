@@ -17,7 +17,7 @@ var ArticleSchema = new Schema({
   },
   updated_at: {
     type: Date
-    }
+  }
 })
 
 var Article = mongoose.model('Article', ArticleSchema);

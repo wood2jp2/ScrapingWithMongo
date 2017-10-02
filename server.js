@@ -33,7 +33,17 @@ const
 
   app.get('/', function(req, res) {
     res.send('HELLLLLOOOOOOO');
-    console.log(db);
+  });
+
+  app.get('/articles', function(req, res) {
+    console.log(Article);
+    Article.find({}, function(err, doc){
+      if (error) {
+        console.log(error)
+      } else {
+        res.json(doc)
+      }
+    });
   });
 
   app.listen(5000, function() {
@@ -41,9 +51,29 @@ const
   });
 
   app.get('/scrape', function(req, res) {
-    request('https://imgur.com/', function(err, res, html) {
-      const $ = cheerio.load(html);
+    console.log('asdfasd');
+    request('https://medium.com/topic/technology', function(err, res, html) {
 
-      
-    })
-  })
+      // shorthand selector for elements on webpage being scraped
+      const $ = cheerio.load(html);
+      $('u-borderBox').each(function(i, element) {
+        var result = {};
+        result.headline = $(this).children('div div a h3').text();
+        result.url = $(this).children('div div a').attr('href');
+        result.summary = $(this).children('div div a h4').text();
+
+        var entry = new Article(result);
+
+        entry.save(function(err, doc) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(doc);
+          }
+        });
+
+      });
+    });
+    res.send('scrape complete');
+    console.log(result.url);
+  });
