@@ -1,10 +1,15 @@
 const
+// six required packages
   express = require('express'),
   hbs = require('express-handlebars'),
   mongoose = require('mongoose'),
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
+
+// schema models for comments (notes) and each article
+  Note = require('./models/Note.js'),
+  Article = require('./models/Article.js'),
 
   app = express(),
 
@@ -27,9 +32,18 @@ const
   });
 
   app.get('/', function(req, res) {
-    res.send('HELLLLLOOOOOOO')
+    res.send('HELLLLLOOOOOOO');
+    console.log(db);
   });
 
   app.listen(5000, function() {
     console.log('App running on port 5000')
   });
+
+  app.get('/scrape', function(req, res) {
+    request('https://imgur.com/', function(err, res, html) {
+      const $ = cheerio.load(html);
+
+      
+    })
+  })
