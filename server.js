@@ -21,7 +21,7 @@ const
 
   app.use(express.static("public"));
 
-  mongoose.connect('mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k');
+  mongoose.connect("mongodb://localhost:27017/ScrapingWithMongoTest");
 
   db.on('error', function(err) {
     console.log('Database Error:', err)
@@ -51,17 +51,16 @@ const
   });
 
   app.get('/scrape', function(req, res) {
-    console.log('asdfasd');
     request('https://medium.com/topic/technology', function(err, res, html) {
 
       // shorthand selector for elements on webpage being scraped
       const $ = cheerio.load(html);
-      $('u-borderBox').each(function(i, element) {
+      $('a').each(function(i, element) {
         var result = {};
-        result.headline = $(this).children('div div a h3').text();
-        result.url = $(this).children('div div a').attr('href');
-        result.summary = $(this).children('div div a h4').text();
-
+        result.headline = $(this).children('h3').text();
+        result.url = $(this).attr('href');
+        result.summary = $(this).children('h4').text();
+        
         var entry = new Article(result);
 
         entry.save(function(err, doc) {
@@ -75,5 +74,4 @@ const
       });
     });
     res.send('scrape complete');
-    console.log(result.url);
   });

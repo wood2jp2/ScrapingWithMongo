@@ -4,13 +4,15 @@ const
 
 var ArticleSchema = new Schema({
   headline: {
-    type: String
+    type: String,
   },
   summary: {
-    type: String
+    type: String,
+    // required: true
   },
   url: {
-    type: String
+    type: String,
+    // required: true
   },
   created_at: {
     type: Date
@@ -18,8 +20,8 @@ var ArticleSchema = new Schema({
   updated_at: {
     type: Date
   }
-})
+});
 
 var Article = mongoose.model('Article', ArticleSchema);
 
-module.exports = ArticleSchema;
+module.exports = Article;
