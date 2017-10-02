@@ -12,8 +12,10 @@ const
   Article = require('./models/Article.js'),
 
   app = express(),
-
+  // mongoose.promise = Promise,
   db = mongoose.connection;
+
+  mongoose.promise = Promise;
 
   app.use(bodyParser.urlencoded({
     extended: false
@@ -36,10 +38,9 @@ const
   });
 
   app.get('/articles', function(req, res) {
-    console.log(Article);
     Article.find({}, function(err, doc){
-      if (error) {
-        console.log(error)
+      if (err) {
+        console.log(err)
       } else {
         res.json(doc)
       }
@@ -55,12 +56,12 @@ const
 
       // shorthand selector for elements on webpage being scraped
       const $ = cheerio.load(html);
-      $('a').each(function(i, element) {
+      $('div.u-flexColumnTop').each(function(i, element) {
         var result = {};
-        result.headline = $(this).children('h3').text();
-        result.url = $(this).attr('href');
-        result.summary = $(this).children('h4').text();
-        
+        result.headline = $(this).find('h3').text();
+        result.url = $(this).children('a').attr('href');
+        result.summary = $(this).find('h4').text();
+
         var entry = new Article(result);
 
         entry.save(function(err, doc) {
