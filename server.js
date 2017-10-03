@@ -23,7 +23,7 @@ const
 
   app.use(express.static("public"));
 
-  mongoose.connect("mongodb://localhost:27017/ScrapingWithMongoTest1");
+  mongoose.connect("mongodb://localhost:27017/ScrapingWithMongoTest45");
 
   db.on('error', function(err) {
     console.log('Database Error:', err)
