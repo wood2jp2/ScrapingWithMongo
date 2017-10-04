@@ -6,6 +6,8 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest47",
+  MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
 // schema models for comments (notes) and each article
   Note = require('./models/Note.js'),
@@ -23,7 +25,8 @@ const
 
   app.use(express.static("public"));
 
-  mongoose.connect("mongodb://localhost:27017/ScrapingWithMongoTest45");
+// test scraping link, from what I understand, this temporarily hosts your
+  mongoose.connect(localServer);
 
   db.on('error', function(err) {
     console.log('Database Error:', err)
@@ -47,6 +50,39 @@ const
     });
   });
 
+  app.get('/articles/:id', function(req, res) {
+    Article.findOne({_id: req.params.id})
+    .populate('note')
+    .exec(function(error, doc) {
+      if (error) {
+        console.log(error);
+      }
+
+      else {
+        res.json(doc);
+      }
+    })
+  });
+
+  app.post('/articles/:id', function(req, res) {
+    var newNote = new Note(req.body);
+    newNote.save(function (error, doc) {
+      if (error) {
+        console.log(error)
+      } else {
+        Article.findOneAndUpdate({'_id': req.params.id}, {'note': doc._id})
+        .exec(function(err, doc) {
+          if (err) {
+            console.log(err)
+          }
+          else {
+            res.send(doc);
+          }
+        })
+      }
+    })
+  });
+
   app.listen(5000, function() {
     console.log('App running on port 5000')
   });
@@ -58,11 +94,13 @@ const
       const $ = cheerio.load(html);
       $('div.u-flexColumnTop').each(function(i, element) {
         var result = {};
+
         result.headline = $(this).find('h3').text();
         result.url = $(this).children('a').attr('href');
         result.summary = $(this).find('h4').text();
 
         var entry = new Article(result);
+        console.log(result);
 
         entry.save(function(err, doc) {
           if (err) {
