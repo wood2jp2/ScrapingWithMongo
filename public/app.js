@@ -23,9 +23,13 @@ $.getJSON('/articles', function(data) {
 
 $(document).on('click', '#saveArticle', function() {
   var thisId = $(this).attr('data-id');
+
   $.ajax({
-      method: 'GET',
-      url: 'articles/' + thisId
+      method: 'PUT',
+      url: '/articles/' + thisId,
+      data: {
+        saved: true
+      }
     })
     .done(function(data) {
       console.log(data.saved);
@@ -36,14 +40,12 @@ $(document).on('click', '#commentId', function() {
 
   $('#notes').empty();
   var thisId = $(this).attr('data-id');
-  console.log(thisId);
   $.ajax({
       method: "GET",
       url: '/articles/' + thisId
     })
 
     .done(function(data) {
-      console.log('data');
       $('#notes').append(`<div class="row">\
     <form class="col s12">\
       <div class="row">\

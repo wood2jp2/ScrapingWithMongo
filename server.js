@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
-  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest48",
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest51",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
   // schema models for comments (notes) and each article
@@ -50,6 +50,18 @@ app.get('/articles', function(req, res) {
   });
 });
 
+app.get('/saved', function(req, res) {
+  Article.find({
+    'saved': true
+  }, function(err, doc) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(doc)
+    }
+  });
+});
+
 app.get('/articles/:id', function(req, res) {
   Article.findOne({
       '_id': req.params.id
@@ -84,6 +96,22 @@ app.post('/articles/:id', function(req, res) {
         })
     }
   })
+});
+
+app.put('/articles/:id', function(req, res) {
+  console.log(req);
+  Article.findOneAndUpdate({
+      '_id': req.params.id
+    }, {
+      'saved': req.body.saved
+    })
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err)
+      } else {
+        res.send(doc)
+      }
+    })
 });
 
 app.listen(5000, function() {

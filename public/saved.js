@@ -1,4 +1,4 @@
-$.getJSON('/articles', function(data) {
+$.getJSON('/saved', function(data) {
 
   for (let i = 0; i < data.length; i++) {
 
@@ -13,9 +13,24 @@ $.getJSON('/articles', function(data) {
             <div class="card-action">\
             <a href="${currentArticle.url}" target='_blank'>Check it out!</a>\
             <a id='commentId' data-id=${currentArticle._id}>Leave a Comment</a>
+            <a id='unsaveArticle' data-id=${currentArticle._id}>Unsave Article</a>
               </div>\
             </div>\
           </div>\
         </div>`);
   }
 });
+
+$(document).on('click', '#unsaveArticle', function() {
+  var thisId = $(this).attr('data-id');
+  $.ajax({
+      method: 'PUT',
+      url: '/articles/' + thisId,
+      data: {
+        'saved': false
+      }
+    })
+    .done(function(data) {
+      console.log(data.saved);
+    });
+})
