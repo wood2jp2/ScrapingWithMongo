@@ -41,7 +41,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/articles', function(req, res) {
-  Article.find({}, function(err, doc) {
+  Article.find({
+    'saved': false
+  }, function(err, doc) {
     if (err) {
       console.log(err)
     } else {

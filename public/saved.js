@@ -31,6 +31,6 @@ $(document).on('click', '#unsaveArticle', function() {
       }
     })
     .done(function(data) {
-      console.log(data.saved);
+      window.location.reload();
     });
 })

@@ -32,7 +32,7 @@ $(document).on('click', '#saveArticle', function() {
       }
     })
     .done(function(data) {
-      console.log(data.saved);
+      window.location.reload();
     });
 });
 
