@@ -12,7 +12,8 @@ $.getJSON('/articles', function(data) {
             </div>\
             <div class="card-action">\
             <a href="${currentArticle.url}" target='_blank'>Check it out!</a>\
-            <a id='commentId' data-id=${currentArticle._id}>Leave a Comment</>
+            <a id='commentId' data-id=${currentArticle._id}>Leave a Comment</a>
+            <a id='saveArticle' data-id=${currentArticle._id}>Save Article</a>
               </div>\
             </div>\
           </div>\
@@ -20,18 +21,30 @@ $.getJSON('/articles', function(data) {
   }
 });
 
+$(document).on('click', '#saveArticle', function() {
+  var thisId = $(this).attr('data-id');
+  $.ajax({
+      method: 'GET',
+      url: 'articles/' + thisId
+    })
+    .done(function(data) {
+      console.log(data.saved);
+    });
+});
+
 $(document).on('click', '#commentId', function() {
+
   $('#notes').empty();
   var thisId = $(this).attr('data-id');
   console.log(thisId);
   $.ajax({
-    method: "GET",
-    url: '/articles/' + thisId
-  })
+      method: "GET",
+      url: '/articles/' + thisId
+    })
 
-  .done(function(data) {
-    console.log('data');
-    $('#notes').append(`<div class="row">\
+    .done(function(data) {
+      console.log('data');
+      $('#notes').append(`<div class="row">\
     <form class="col s12">\
       <div class="row">\
       <h4>${data.headline}</h4>
@@ -48,28 +61,28 @@ $(document).on('click', '#commentId', function() {
     </form>\
   </div>`);
 
-  if (data.note) {
-    $("#textarea1").val(data.note.title);
-    $("#textarea2").val(data.note.body);
-  }
-});
+      // if (data.note) {
+      //   $("#textarea1").val(data.note.title);
+      //   $("#textarea2").val(data.note.body);
+      // }
+    });
 });
 
 $(document).on('click', '#saveNote', function() {
   var thisId = $(this).attr('data-id');
   console.log(thisId);
 
-  $.ajax ({
-    method: 'POST',
-    url: '/articles/' + thisId,
-    data: {
-      title: $('#textarea1').val(),
-      body: $('#textarea2').val()
-    }
-  })
-  .done(function(data) {
-    $('#notes').empty();
-  });
+  $.ajax({
+      method: 'POST',
+      url: '/articles/' + thisId,
+      data: {
+        title: $('#textarea1').val(),
+        body: $('#textarea2').val()
+      }
+    })
+    .done(function(data) {
+      $('#notes').empty();
+    });
   $('#textarea1').val('');
   $('#textarea2').val('');
   console.log(thisId);

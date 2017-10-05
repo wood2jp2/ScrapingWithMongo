@@ -1,5 +1,5 @@
 const
-// six required packages
+  // six required packages
   express = require('express'),
   hbs = require('express-handlebars'),
   mongoose = require('mongoose'),
@@ -9,7 +9,7 @@ const
   localServer = "mongodb://localhost:27017/ScrapingWithMongoTest48",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
-// schema models for comments (notes) and each article
+  // schema models for comments (notes) and each article
   Note = require('./models/Note.js'),
   Article = require('./models/Article.js'),
 
@@ -17,100 +17,103 @@ const
   // mongoose.promise = Promise,
   db = mongoose.connection;
 
-  mongoose.promise = Promise;
+mongoose.promise = Promise;
 
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
-  app.use(express.static("public"));
+app.use(express.static("public"));
 
 // test scraping link, from what I understand, this temporarily hosts your
-  mongoose.connect(localServer);
+mongoose.connect(localServer);
 
-  db.on('error', function(err) {
-    console.log('Database Error:', err)
+db.on('error', function(err) {
+  console.log('Database Error:', err)
+});
+
+db.once('open', function() {
+  console.log('Mongoose connection successful')
+});
+
+app.get('/', function(req, res) {
+  res.send('HELLLLLOOOOOOO');
+});
+
+app.get('/articles', function(req, res) {
+  Article.find({}, function(err, doc) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(doc)
+    }
   });
+});
 
-  db.once('open', function() {
-    console.log('Mongoose connection successful')
-  });
-
-  app.get('/', function(req, res) {
-    res.send('HELLLLLOOOOOOO');
-  });
-
-  app.get('/articles', function(req, res) {
-    Article.find({}, function(err, doc){
-      if (err) {
-        console.log(err)
-      } else {
-        res.json(doc)
-      }
-    });
-  });
-
-  app.get('/articles/:id', function(req, res) {
-    Article.findOne({'_id': req.params.id})
+app.get('/articles/:id', function(req, res) {
+  Article.findOne({
+      '_id': req.params.id
+    })
     .populate('note')
     .exec(function(error, doc) {
       if (error) {
         console.log(error);
-      }
-
-      else {
+      } else {
         res.json(doc);
       }
     })
-  });
+});
 
-  app.post('/articles/:id', function(req, res) {
-    var newNote = new Note(req.body);
-    newNote.save(function (error, doc) {
-      if (error) {
-        console.log(error)
-      } else {
-        Article.findOneAndUpdate({'_id': req.params.id}, {'note': doc._id})
+app.post('/articles/:id', function(req, res) {
+  var newNote = new Note(req.body);
+  newNote.save(function(error, doc) {
+    if (error) {
+      console.log(error)
+    } else {
+      Article.findOneAndUpdate({
+          '_id': req.params.id
+        }, {
+          'note': doc._id
+        })
         .exec(function(err, doc) {
           if (err) {
             console.log(err)
-          }
-          else {
+          } else {
             res.send(doc);
           }
         })
-      }
-    })
-  });
+    }
+  })
+});
 
-  app.listen(5000, function() {
-    console.log('App running on port 5000')
-  });
+app.listen(5000, function() {
+  console.log('App running on port 5000')
+});
 
-  app.get('/scrape', function(req, res) {
-    request('https://medium.com/topic/technology', function(err, res, html) {
+app.get('/scrape', function(req, res) {
+  request('https://medium.com/topic/technology', function(err, res, html) {
 
-      // shorthand selector for elements on webpage being scraped
-      const $ = cheerio.load(html);
-      $('div.u-flexColumnTop').each(function(i, element) {
-        var result = {};
+    // shorthand selector for elements on webpage being scraped
+    const $ = cheerio.load(html);
+    $('div.u-flexColumnTop').each(function(i, element) {
+      var result = {};
 
-        result.headline = $(this).find('h3').text();
-        result.url = $(this).children('a').attr('href');
-        result.summary = $(this).find('h4').text();
+      result.headline = $(this).find('h3').text();
+      result.url = $(this).children('a').attr('href');
+      result.summary = $(this).find('h4').text();
 
-        var entry = new Article(result);
-        console.log(result);
+      var entry = new Article(result);
+      console.log(result);
 
-        entry.save(function(err, doc) {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(doc);
-          }
-        });
-
+      entry.save(function(err, doc) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(doc);
+        }
       });
+
     });
-    res.send('scrape complete');
   });
+  res.send('scrape complete');
+});
