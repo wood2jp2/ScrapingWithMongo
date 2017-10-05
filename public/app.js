@@ -18,7 +18,7 @@ $.getJSON('/articles', function(data) {
           </div>\
         </div>`);
   }
-}); 
+});
 
 $(document).on('click', '#commentId', function() {
   $('#notes').empty();
@@ -31,5 +31,46 @@ $(document).on('click', '#commentId', function() {
 
   .done(function(data) {
     console.log('data');
+    $('#notes').append(`<div class="row">\
+    <form class="col s12">\
+      <div class="row">\
+      <h4>${data.headline}</h4>
+        <div class="input-field col s12">\
+        <textarea id="textarea1" class="materialize-textarea"></textarea>\
+        <label for="title">Title</label>\
+        </div>
+        <div class='input-field col s12'>
+          <textarea id="textarea2" class="materialize-textarea"></textarea>\
+          <label for="comment">Comment</label>\
+        </div>
+        <a data-id=${data.id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
+      </div>\
+    </form>\
+  </div>`);
+
+  if (data.note) {
+    $("#titleinput").val(data.note.title);
+    $("#bodyinput").val(data.note.body);
+  }
+});
+});
+
+$(document).on('click', '#saveNote', function() {
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+
+  $.ajax ({
+    method: 'POST',
+    url: '/articles/' + thisId,
+    data: {
+      title: $('#titleinput').val(),
+      body: $('#bodyinput').val()
+    }
   })
-})
+  .done(function(data) {
+    console.log(data);
+    $('#notes').empty();
+  });
+  $('#titleinput').val('');
+  $('#bodyinput').val('');
+});
