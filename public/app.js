@@ -72,4 +72,5 @@ $(document).on('click', '#saveNote', function() {
   });
   $('#textarea1').val('');
   $('#textarea2').val('');
+  console.log(thisId);
 });
