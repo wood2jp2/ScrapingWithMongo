@@ -43,14 +43,14 @@ $(document).on('click', '#commentId', function() {
           <textarea id="textarea2" class="materialize-textarea"></textarea>\
           <label for="comment">Comment</label>\
         </div>
-        <a data-id=${data.id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
+        <a data-id=${data._id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
       </div>\
     </form>\
   </div>`);
 
   if (data.note) {
-    $("#titleinput").val(data.note.title);
-    $("#bodyinput").val(data.note.body);
+    $("#textarea1").val(data.note.title);
+    $("#textarea2").val(data.note.body);
   }
 });
 });
@@ -63,14 +63,13 @@ $(document).on('click', '#saveNote', function() {
     method: 'POST',
     url: '/articles/' + thisId,
     data: {
-      title: $('#titleinput').val(),
-      body: $('#bodyinput').val()
+      title: $('#textarea1').val(),
+      body: $('#textarea2').val()
     }
   })
   .done(function(data) {
-    console.log(data);
     $('#notes').empty();
   });
-  $('#titleinput').val('');
-  $('#bodyinput').val('');
+  $('#textarea1').val('');
+  $('#textarea2').val('');
 });
