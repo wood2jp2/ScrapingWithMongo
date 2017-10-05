@@ -12,7 +12,7 @@ $.getJSON('/articles', function(data) {
             </div>\
             <div class="card-action">\
             <a href="${currentArticle.url}" target='_blank'>Check it out!</a>\
-            <a id='commentId' data-id=${currentArticle._id}>Leave a Comment</a>
+            <a id='commentId' class='modalTrigger' href='#modal1' data-id=${currentArticle._id}>Leave a Comment</a>
             <a id='saveArticle' data-id=${currentArticle._id}>Save Article</a>
               </div>\
             </div>\
@@ -46,22 +46,35 @@ $(document).on('click', '#commentId', function() {
     })
 
     .done(function(data) {
-      $('#notes').append(`<div class="row">\
-    <form class="col s12">\
-      <div class="row">\
-      <h4>${data.headline}</h4>
-        <div class="input-field col s12">\
-        <textarea id="textarea1" class="materialize-textarea"></textarea>\
-        <label for="title">Title</label>\
-        </div>
-        <div class='input-field col s12'>
-          <textarea id="textarea2" class="materialize-textarea"></textarea>\
-          <label for="comment">Comment</label>\
-        </div>
-        <a data-id=${data._id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
-      </div>\
-    </form>\
-  </div>`);
+      //     $('#notes').append(`<div class="row">\
+      //   <form class="col s12">\
+      //     <div class="row">\
+      //     <h4>${data.headline}</h4>
+      //       <div class="input-field col s12">\
+      //       <textarea id="textarea1" class="materialize-textarea"></textarea>\
+      //       <label for="title">Title</label>\
+      //       </div>
+      //       <div class='input-field col s12'>
+      //         <textarea id="textarea2" class="materialize-textarea"></textarea>\
+      //         <label for="comment">Comment</label>\
+      //       </div>
+      //       <a data-id=${data._id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
+      //     </div>\
+      //   </form>\
+      // </div>`);
+
+      $('#notes').append(`    <div id="modal1" class="modal bottom-sheet">
+            <div class="modal-content">
+              <h4 id='articleTitle'></h4>
+
+              <p>A bunch of text</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+            </div>
+          </div>`);
+
+      $('#modal1').modal('open');
 
       // if (data.note) {
       //   $("#textarea1").val(data.note.title);

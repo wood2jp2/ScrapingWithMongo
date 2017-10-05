@@ -17,7 +17,7 @@ const
   // mongoose.promise = Promise,
   db = mongoose.connection;
 
-mongoose.promise = Promise;
+mongoose.promise = require('bluebird');
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -26,7 +26,9 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // test scraping link, from what I understand, this temporarily hosts your
-mongoose.connect(localServer);
+mongoose.connect(localServer, {
+  useMongoClient: true
+});
 
 db.on('error', function(err) {
   console.log('Database Error:', err)

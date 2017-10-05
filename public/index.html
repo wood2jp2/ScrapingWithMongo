@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Scraping with Mongo</title>
+  <title>Scraping with Mongoose</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   <style>
     #notes {
@@ -14,7 +14,7 @@
 <body>
   <nav>
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo">Web Scraping with Mongoose - Home</a>
+      <a href="/" class="brand-logo">Web Scraping with Mongoose</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="/">Home</a></li>
         <li><a href="/articles">Articles JSON</a></li>
@@ -27,6 +27,18 @@
 
   </div>
   <div id="notes">
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+      <div class="modal-content">
+        <h4 id='articleTitle'></h4>
+
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+      </div>
+    </div>
 
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
