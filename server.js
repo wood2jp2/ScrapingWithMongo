@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
-  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest53",
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest54",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
   // schema models for comments (notes) and each article

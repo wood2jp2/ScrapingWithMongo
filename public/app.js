@@ -12,7 +12,7 @@ $.getJSON('/articles', function(data) {
             </div>\
             <div class="card-action">\
             <a href="${currentArticle.url}" target='_blank'>Check it out!</a>\
-            <a id='commentId' href='#modal1' data-id=${currentArticle._id}>Leave a Comment</a>
+            <a id='commentId' data-id=${currentArticle._id}>Leave a Comment</a>
             <a id='saveArticle' data-id=${currentArticle._id}>Save Article</a>
               </div>\
             </div>\
@@ -38,58 +38,44 @@ $(document).on('click', '#saveArticle', function() {
     });
 });
 
+// when leave a comment is clicked...
 $(document).on('click', '#commentId', function() {
+
+  // open comment modal
   $('#modal1').modal('open');
   var thisId = $(this).attr('data-id');
+
+  // get article data
   $.ajax({
       method: "GET",
       url: '/articles/' + thisId
     })
-
+    // once that's finished
     .done(function(data) {
-      //     $('#notes').append(`<div class="row">\
-      //   <form class="col s12">\
-      //     <div class="row">\
-      //     <h4>${data.headline}</h4>
-      //       <div class="input-field col s12">\
-      //       <textarea id="textarea1" class="materialize-textarea"></textarea>\
-      //       <label for="title">Title</label>\
-      //       </div>
-      //       <div class='input-field col s12'>
-      //         <textarea id="textarea2" class="materialize-textarea"></textarea>\
-      //         <label for="comment">Comment</label>\
-      //       </div>
-      //       <a data-id=${data._id} id='saveNote' class="waves-effect waves-light btn-large">Save</a>
-      //     </div>\
-      //   </form>\
-      // </div>`);
-      $('#articleTitle').append($('.card-title').text());
+      console.log(data);
+      $('#articleTitle').append(data.headline);
+      if (data.body) {
+        $('#postedComments').append(data.note.body);
+      };
 
-
-
+      // when the user wants to save the comment...
+      $(document).on('click', '#saveNote', function() {
+        console.log(thisId);
+        $.ajax({
+            method: 'POST',
+            url: '/articles/' + thisId,
+            data: {
+              body: $('#commentInput').val()
+            }
+          })
+          .done(function(data) {
+            $('#notes').empty();
+          });
+        $('#commentInput').val('');
+      });
       // if (data.note) {
       //   $("#textarea1").val(data.note.title);
       //   $("#textarea2").val(data.note.body);
       // }
     });
-});
-
-$(document).on('click', '#saveNote', function() {
-  var thisId = $(this).attr('data-id');
-  console.log(thisId);
-
-  $.ajax({
-      method: 'POST',
-      url: '/articles/' + thisId,
-      data: {
-        title: $('#textarea1').val(),
-        body: $('#textarea2').val()
-      }
-    })
-    .done(function(data) {
-      // $('#notes').empty();
-    });
-  $('#textarea1').val('');
-  $('#textarea2').val('');
-  console.log(thisId);
 });

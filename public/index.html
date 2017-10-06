@@ -32,11 +32,12 @@
     <div id="modal1" class="modal bottom-sheet">
       <div class="modal-content">
         <h4 id='articleTitle'></h4>
-        <textarea id='currentComments' name="currentComments" cols="30" rows="10"></textarea>
-        <input id='commentInput' type="text"></input>
+        <div id='postedComments'>
+        </div>
+        <input id='commentInput' placeholder="Add Your Own Comment" type="text"></input>
       </div>
       <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+        <a id='saveNote' class="modal-action modal-close waves-effect waves-green btn-flat">Leave Comment</a>
       </div>
     </div>
 
