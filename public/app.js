@@ -12,7 +12,7 @@ $.getJSON('/articles', function(data) {
             </div>\
             <div class="card-action">\
             <a href="${currentArticle.url}" target='_blank'>Check it out!</a>\
-            <a id='commentId' class='modalTrigger' href='#modal1' data-id=${currentArticle._id}>Leave a Comment</a>
+            <a id='commentId' href='#modal1' data-id=${currentArticle._id}>Leave a Comment</a>
             <a id='saveArticle' data-id=${currentArticle._id}>Save Article</a>
               </div>\
             </div>\
@@ -20,6 +20,8 @@ $.getJSON('/articles', function(data) {
         </div>`);
   }
 });
+
+$('.modal').modal();
 
 $(document).on('click', '#saveArticle', function() {
   var thisId = $(this).attr('data-id');
@@ -37,8 +39,7 @@ $(document).on('click', '#saveArticle', function() {
 });
 
 $(document).on('click', '#commentId', function() {
-
-  $('#notes').empty();
+  $('#modal1').modal('open');
   var thisId = $(this).attr('data-id');
   $.ajax({
       method: "GET",
@@ -62,19 +63,9 @@ $(document).on('click', '#commentId', function() {
       //     </div>\
       //   </form>\
       // </div>`);
+      $('#articleTitle').append($('.card-title').text());
 
-      $('#notes').append(`    <div id="modal1" class="modal bottom-sheet">
-            <div class="modal-content">
-              <h4 id='articleTitle'></h4>
 
-              <p>A bunch of text</p>
-            </div>
-            <div class="modal-footer">
-              <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
-            </div>
-          </div>`);
-
-      $('#modal1').modal('open');
 
       // if (data.note) {
       //   $("#textarea1").val(data.note.title);
@@ -96,7 +87,7 @@ $(document).on('click', '#saveNote', function() {
       }
     })
     .done(function(data) {
-      $('#notes').empty();
+      // $('#notes').empty();
     });
   $('#textarea1').val('');
   $('#textarea2').val('');

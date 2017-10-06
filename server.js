@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
-  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest51",
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest53",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
   // schema models for comments (notes) and each article
@@ -17,7 +17,7 @@ const
   // mongoose.promise = Promise,
   db = mongoose.connection;
 
-mongoose.promise = require('bluebird');
+mongoose.promise = Promise;
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -103,7 +103,6 @@ app.post('/articles/:id', function(req, res) {
 });
 
 app.put('/articles/:id', function(req, res) {
-  console.log(req);
   Article.findOneAndUpdate({
       '_id': req.params.id
     }, {
@@ -135,7 +134,6 @@ app.get('/scrape', function(req, res) {
       result.summary = $(this).find('h4').text();
 
       var entry = new Article(result);
-      console.log(result);
 
       entry.save(function(err, doc) {
         if (err) {
