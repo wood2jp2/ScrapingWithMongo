@@ -53,29 +53,33 @@ $(document).on('click', '#commentId', function() {
     // once that's finished
     .done(function(data) {
       console.log(data);
-      $('#articleTitle').append(data.headline);
+      $('#articleTitle').text(data.headline);
+      $('#saveNote').attr('data-id', thisId);
       if (data.body) {
         $('#postedComments').append(data.note.body);
       };
 
       // when the user wants to save the comment...
-      $(document).on('click', '#saveNote', function() {
-        console.log(thisId);
-        $.ajax({
-            method: 'POST',
-            url: '/articles/' + thisId,
-            data: {
-              body: $('#commentInput').val()
-            }
-          })
-          .done(function(data) {
-            $('#notes').empty();
-          });
-        $('#commentInput').val('');
-      });
+
       // if (data.note) {
       //   $("#textarea1").val(data.note.title);
       //   $("#textarea2").val(data.note.body);
       // }
     });
+});
+
+$(document).on('click', '#saveNote', function() {
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+  $.ajax({
+      method: 'POST',
+      url: '/articles/' + thisId,
+      data: {
+        body: $('#commentInput').val()
+      }
+    })
+    .done(function(data) {
+      $('#notes').empty();
+    });
+  $('#commentInput').val('');
 });
