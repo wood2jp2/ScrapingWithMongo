@@ -59,15 +59,11 @@ $(document).on('click', '#commentId', function() {
         $('#postedComments').append(data.note.body);
       };
 
-      // when the user wants to save the comment...
 
-      // if (data.note) {
-      //   $("#textarea1").val(data.note.title);
-      //   $("#textarea2").val(data.note.body);
-      // }
     });
 });
 
+// when the user wants to save the comment...
 $(document).on('click', '#saveNote', function() {
   var thisId = $(this).attr('data-id');
   console.log(thisId);
@@ -79,7 +75,7 @@ $(document).on('click', '#saveNote', function() {
       }
     })
     .done(function(data) {
-      $('#notes').empty();
+      $('#modal1').modal('close');
     });
   $('#commentInput').val('');
 });
