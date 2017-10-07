@@ -80,6 +80,10 @@ app.get('/articles/:id', function(req, res) {
     })
 });
 
+app.destroy('/articles/:id', function(req, res) {
+  console.log('hi');
+});
+
 app.post('/articles/:id', function(req, res) {
   var newNote = new Note(req.body);
   newNote.save(function(error, doc) {

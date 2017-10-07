@@ -55,11 +55,20 @@ $(document).on('click', '#commentId', function() {
       console.log(data);
       $('#articleTitle').text(data.headline);
       $('#saveNote').attr('data-id', thisId);
-      if (data.body) {
-        $('#postedComments').append(data.note.body);
+      if (data.note) {
+        $('.collection').append(`<li class="collection-item">${data.note.body}<a data-id=${thisId} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
       };
+    });
+});
 
-
+$(document).on('click', '#deleteComment', function() {
+  var thisId = $(this).attr('data-id');
+  $.ajax({
+      method: 'DELETE',
+      url: '/articles/' + thisId
+    })
+    .done(function(data) {
+      console.log('delete boys');
     });
 });
 
