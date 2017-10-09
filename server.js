@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
-  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest55",
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest56",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
   // schema models for comments (notes) and each article
@@ -80,8 +80,19 @@ app.get('/articles/:id', function(req, res) {
     })
 });
 
-app.destroy('/articles/:id', function(req, res) {
-  console.log('hi');
+app.delete('/articles/:id', function(req, res) {
+  console.log(req.params);
+  Note.findByIdAndRemove({
+    '_id': req.params.id
+  })
+  .exec(function(err, doc) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send(doc);
+    }
+  });
+
 });
 
 app.post('/articles/:id', function(req, res) {
