@@ -54,6 +54,7 @@ $(document).on('click', '#commentId', function() {
     .done(function(data) {
       $('#articleTitle').text(data.headline);
       $('#saveNote').attr('data-id', thisId);
+      $('.collection').empty();
       for (let i = 0; i<data.note.length; i++) {
           $('.collection').append(`<li class="collection-item">${data.note[i].body}<a data-id=${data.note[i]._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
       }
