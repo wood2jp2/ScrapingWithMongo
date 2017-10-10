@@ -83,15 +83,15 @@ app.get('/articles/:id', function(req, res) {
 app.delete('/articles/:id', function(req, res) {
   console.log(req.params);
   Note.findByIdAndRemove({
-    '_id': req.params.id
-  })
-  .exec(function(err, doc) {
-    if (err) {
-      console.log(err)
-    } else {
-      res.send(doc);
-    }
-  });
+      '_id': req.params.id
+    })
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err)
+      } else {
+        res.send(doc);
+      }
+    });
 
 });
 
@@ -125,9 +125,11 @@ app.post('/articles/:id', function(req, res) {
       console.log(error)
     } else {
       Article.findByIdAndUpdate(
-        req.params.id, {$push: {
-          'note': doc._id
-        }})
+          req.params.id, {
+            $push: {
+              'note': doc._id
+            }
+          })
         .exec(function(err, doc) {
           if (err) {
             console.log(err)
@@ -140,18 +142,34 @@ app.post('/articles/:id', function(req, res) {
 });
 
 app.put('/articles/:id', function(req, res) {
-  Article.findOneAndUpdate({
-      '_id': req.params.id
-    }, {
-      'saved': req.body.saved
-    })
-    .exec(function(err, doc) {
-      if (err) {
-        console.log(err)
-      } else {
-        res.send(doc)
-      }
-    })
+  if (req.body.saved) {
+    Article.findOneAndUpdate({
+        '_id': req.params.id
+      }, {
+        'saved': req.body.saved
+      })
+      .exec(function(err, doc) {
+        if (err) {
+          console.log(err)
+        } else {
+          res.send(doc)
+        }
+      });
+  } else {
+    Note.findOneAndUpdate({
+        '_id': req.params.id
+      }, {
+        'body': 'something'
+      })
+      .exec(function(err, doc) {
+        if (err) {
+          console.log(err)
+        } else {
+          res.send(doc)
+        }
+      })
+  }
+
 });
 
 app.listen(5000, function() {

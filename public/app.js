@@ -55,10 +55,22 @@ $(document).on('click', '#commentId', function() {
       $('#articleTitle').text(data.headline);
       $('#saveNote').attr('data-id', thisId);
       $('.collection').empty();
-      for (let i = 0; i<data.note.length; i++) {
-          $('.collection').append(`<li class="collection-item">${data.note[i].body}<a data-id=${data.note[i]._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
-      }
-;
+      for (let i = 0; i < data.note.length; i++) {
+        $('.collection').append(`<li class="collection-item">${data.note[i].body}<button id='editButton' class="btn waves-effect waves-light" data-id=${data.note[i]._id} type="submit" name="action">Edit\
+  </button><a data-id=${data.note[i]._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
+      };
+    });
+});
+
+$(document).on('click', '#editButton', function() {
+  var thisId = $(this).attr('data-id');
+
+  $.ajax({
+      METHOD: 'PUT',
+      url: '/articles/' + thisId
+    })
+    .done(function(data) {
+      console.log('edit edit')
     });
 });
 
