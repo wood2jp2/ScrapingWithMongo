@@ -21,6 +21,62 @@ $.getJSON('/saved', function(data) {
   }
 });
 
+$('.modal').modal();
+
+// when leave a comment is clicked...
+$(document).on('click', '#commentId', function() {
+
+  // open comment modal
+  $('#modal1').modal('open');
+  var thisId = $(this).attr('data-id');
+
+  // get article data
+  $.ajax({
+      method: "GET",
+      url: '/articles/' + thisId
+    })
+    // once that's finished
+    .done(function(data) {
+      $('#articleTitle').text(data.headline);
+      $('#saveNote').attr('data-id', thisId);
+      if (data.note) {
+        $('.collection').append(`<li class="collection-item">${data.note.body}<a data-id=${data.note._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
+      };
+    });
+});
+
+$(document).on('click', '#deleteComment', function() {
+
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+
+  $.ajax({
+      method: 'DELETE',
+      url: '/articles/' + thisId,
+    })
+    .done(function(data) {
+      console.log(data);
+    });
+});
+
+// when the user wants to save the comment...
+$(document).on('click', '#saveNote', function() {
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+  $.ajax({
+      method: 'POST',
+      url: '/articles/' + thisId,
+      data: {
+        body: $('#commentInput').val()
+      }
+    })
+    .done(function(data) {
+      console.log(data);
+      $('#modal1').modal('close');
+    });
+  $('#commentInput').val('');
+});
+
 $(document).on('click', '#unsaveArticle', function() {
   var thisId = $(this).attr('data-id');
   $.ajax({
@@ -33,4 +89,4 @@ $(document).on('click', '#unsaveArticle', function() {
     .done(function(data) {
       window.location.reload();
     });
-})
+});

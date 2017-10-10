@@ -52,10 +52,8 @@ $(document).on('click', '#commentId', function() {
     })
     // once that's finished
     .done(function(data) {
-      console.log(data);
       $('#articleTitle').text(data.headline);
       $('#saveNote').attr('data-id', thisId);
-      console.log(data.note);
       if (data.note) {
         $('.collection').append(`<li class="collection-item">${data.note.body}<a data-id=${data.note._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
       };
@@ -70,9 +68,6 @@ $(document).on('click', '#deleteComment', function() {
   $.ajax({
       method: 'DELETE',
       url: '/articles/' + thisId,
-      // data: {
-      //   note: ''
-      // }
     })
     .done(function(data) {
       console.log(data);

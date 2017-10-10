@@ -4,9 +4,8 @@
   <title>Scraping with Mongoose</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
   <style>
-    #notes {
+    #deleteComment {
       float: right;
-      width: 30%;
     }
   </style>
 </head>
@@ -26,7 +25,21 @@
 
   </div>
   <div id="notes">
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal bottom-sheet">
+      <div class="modal-content">
+        <h4 id='articleTitle'></h4>
+        <div id='postedComments'>
+          <ul class="collection">
 
+          </ul>
+        </div>
+        <input id='commentInput' placeholder="Add Your Own Comment" type="text"></input>
+      </div>
+      <div class="modal-footer">
+        <a id='saveNote' class="modal-action modal-close waves-effect waves-green btn-flat">Leave Comment</a>
+      </div>
+    </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
