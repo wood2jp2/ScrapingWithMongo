@@ -6,7 +6,7 @@ const
   bodyParser = require('body-parser'),
   request = require('request'),
   cheerio = require('cheerio'),
-  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest56",
+  localServer = "mongodb://localhost:27017/ScrapingWithMongoTest57",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
 
   // schema models for comments (notes) and each article
@@ -95,17 +95,39 @@ app.delete('/articles/:id', function(req, res) {
 
 });
 
+// app.post('/articles/:id', function(req, res) {
+//   var newNote = new Note(req.body);
+//   console.log(req);
+//   newNote.save(function(error, doc) {
+//     if (error) {
+//       console.log(error)
+//     } else {
+//       Article.findOneAndUpdate({
+//           '_id': req.params.id
+//         }, {
+//           'note': doc._id
+//         })
+//         .exec(function(err, doc) {
+//           if (err) {
+//             console.log(err)
+//           } else {
+//             res.send(doc);
+//           }
+//         })
+//     }
+//   })
+// });
+
 app.post('/articles/:id', function(req, res) {
   var newNote = new Note(req.body);
   newNote.save(function(error, doc) {
     if (error) {
       console.log(error)
     } else {
-      Article.findOneAndUpdate({
-          '_id': req.params.id
-        }, {
+      Article.findByIdAndUpdate(
+        req.params.id, {$push: {
           'note': doc._id
-        })
+        }})
         .exec(function(err, doc) {
           if (err) {
             console.log(err)

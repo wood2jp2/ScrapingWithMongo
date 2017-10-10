@@ -54,9 +54,10 @@ $(document).on('click', '#commentId', function() {
     .done(function(data) {
       $('#articleTitle').text(data.headline);
       $('#saveNote').attr('data-id', thisId);
-      if (data.note) {
-        $('.collection').append(`<li class="collection-item">${data.note.body}<a data-id=${data.note._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
-      };
+      for (let i = 0; i<data.note.length; i++) {
+          $('.collection').append(`<li class="collection-item">${data.note[i].body}<a data-id=${data.note[i]._id} id='deleteComment' class="waves-effect waves-light btn red">X</a></li>`);
+      }
+;
     });
 });
 
@@ -71,6 +72,7 @@ $(document).on('click', '#deleteComment', function() {
     })
     .done(function(data) {
       console.log(data);
+      window.location.reload();
     });
 });
 
