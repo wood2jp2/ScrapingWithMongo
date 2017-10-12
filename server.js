@@ -8,7 +8,7 @@ const
   cheerio = require('cheerio'),
   localServer = "mongodb://localhost:27017/ScrapingWithMongoTest57",
   MONGODB_URI = 'mongodb://heroku_m5fhgc0k:4t1sk8ucn0ulht5v7893pdpol7@ds155674.mlab.com:55674/heroku_m5fhgc0k',
-
+  port = process.env.PORT || 5000,
   // schema models for comments (notes) and each article
   Note = require('./models/Note.js'),
   Article = require('./models/Article.js'),
@@ -172,7 +172,7 @@ app.put('/articles/:id', function(req, res) {
 
 });
 
-app.listen(5000, function() {
+app.listen(port, function() {
   console.log('App running on port 5000')
 });
 
