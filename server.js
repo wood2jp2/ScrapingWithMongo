@@ -25,8 +25,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-// test scraping link, from what I understand, this temporarily hosts your
-mongoose.connect(localServer, {
+// test scraping link, from what I understand, this temporarily hosts your mongoose connection
+mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
