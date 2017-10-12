@@ -142,34 +142,19 @@ app.post('/articles/:id', function(req, res) {
 });
 
 app.put('/articles/:id', function(req, res) {
-  if (req.body.saved) {
-    Article.findOneAndUpdate({
-        '_id': req.params.id
-      }, {
-        'saved': req.body.saved
-      })
-      .exec(function(err, doc) {
-        if (err) {
-          console.log(err)
-        } else {
-          res.send(doc)
-        }
-      });
-  } else {
-    Note.findOneAndUpdate({
-        '_id': req.params.id
-      }, {
-        'body': 'something'
-      })
-      .exec(function(err, doc) {
-        if (err) {
-          console.log(err)
-        } else {
-          res.send(doc)
-        }
-      })
-  }
 
+  Article.findOneAndUpdate({
+      '_id': req.params.id
+    }, {
+      'saved': req.body.saved
+    })
+    .exec(function(err, doc) {
+      if (err) {
+        console.log(err)
+      } else {
+        res.send(doc)
+      }
+    });
 });
 
 app.listen(port, function() {
