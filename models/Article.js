@@ -4,16 +4,13 @@ const
 
 var ArticleSchema = new Schema({
   headline: {
-    type: String,
-    required: true
+    type: String
   },
   summary: {
-    type: String,
-    required: true
+    type: String
   },
   url: {
-    type: String,
-    required: true
+    type: String
   },
   note: [{
     type: Schema.Types.ObjectId,
